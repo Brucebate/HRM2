@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require("cors");
 const app = express();
@@ -6,7 +7,7 @@ const User = require("./db");
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const SECRET_KEY = 's3cr3tK3y!@#4567GHIJKLMNOPtrstu'
+const SECRET_KEY = process.env.SECRET_KEY;
 app.use(cors({
   origin: 'http://localhost:3000',
   methods: ["GET", "POST"],
@@ -14,28 +15,11 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// connectDB()
+
 
 app.get("/message", (req, res) => {
   res.json({ message: " " });
 });
-
-// app.post("/", async (req, res) => {
-//   const { employeeId, password } = req.body;
-
-//   try {
-//     const user = await User.findOne({ employeeId: employeeId });
-
-//     if (user) {
-//       res.json("exist");
-//     } else {
-//       res.json("notexist");
-//     }
-//   } catch (e) {
-//     console.error("Error:", e);
-//     res.json("error");
-//   }
-// });
 
 
 app.post("/", async (req, res) => {
@@ -44,18 +28,7 @@ app.post("/", async (req, res) => {
     try {
       const user = await User.findOne({ employeeId: employeeId });
   
-  //     if (user) {
-  //       res.json("exist");
-  //       res.json({ role: user.role });
-        
-  //     } else {
-  //       res.json("notexist");
-  //     }
-  //   } catch (e) {
-  //     console.error("Error:", e);
-  //     res.json("error");
-  //   }
-  // });
+  
   console.log("user found:", user)
     if (user) {
       res.json({status: "exist", name: user.name, role: user.role});
@@ -106,8 +79,8 @@ const transporter = nodemailer.createTransport({
   // requireTLS: true,
 
   auth: {
-      user: 'thehardcashindia@gmail.com',
-    pass: 'rclp swlm utxu jxch'
+      user: process.env.NODE_USER,
+      pass: process.env.NODE_PASS
   }
 });
 
@@ -140,10 +113,11 @@ app.post('/forgot-password', async (req, res) => {
 });
 
 
+const port = process.env.PORT || 3000;  // Use the PORT from .env, fallback to 3000 if not set
 
-app.listen(8000, () => {
-    console.log(`Server is running on port 8000.`);
-  });
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
   
    // app.post("/register", async (req, resp) => {
   //   try {
