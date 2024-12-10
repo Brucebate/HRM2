@@ -1,3 +1,4 @@
+require('dotenv').config();
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ForgotPassword.css';
@@ -6,12 +7,12 @@ import axios from 'axios';
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const navigate = useNavigate();
-
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
   const handleSendOtp = async () => {
     console.log('OTP sent to:', email);
      
     try{
-      const response = await axios.post('http://localhost:8000/forgot-password', { email });
+      const response = await axios.post(`${API_BASE_URL}/forgot-password`, { email });
       localStorage.setItem('resetToken', response.data.token);
       navigate('/otp-verification')
   } catch (error) {
