@@ -96,7 +96,7 @@ app.post('/forgot-password', async (req, res) => {
   const token = jwt.sign({email, otp}, SECRET_KEY, {expiresIn: '1h'})
 
   const mailOptions = {
-    from: 'thehardcashindia@gmail.com',
+    from: process.env.NODE_USER,
     to: email,
     subject: "password reset OTP",
     text: `Your otp is ${otp}`
@@ -115,25 +115,6 @@ app.post('/forgot-password', async (req, res) => {
 
 const port = process.env.PORT || 3000;  // Use the PORT from .env, fallback to 3000 if not set
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+app.listen(port, '0.0.0.0', () => {
+  console.log(`Server running on port ${port}`);
 });
-  
-   // app.post("/register", async (req, resp) => {
-  //   try {
-  //       const user = new user(req.body);
-  //       let result = await user.save();
-  //       result = result.toObject();
-  //       if (result) {
-  //           delete result.Password;
-  //           resp.send(req.body);
-  //           console.log(result);
-  //       } else {
-  //           console.log("User already register");
-  //       }
-  
-  //   } catch (e) {
-  //       resp.send("Something Went Wrong");
-  //   }
-  // }); 
-
