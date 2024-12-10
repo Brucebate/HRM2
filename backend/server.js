@@ -24,6 +24,7 @@ app.get("/message", (req, res) => {
 
 app.post("/", async (req, res) => {
     const { employeeId, password } = req.body;
+    res.send("Hello")
   
     try {
       const user = await User.findOne({ employeeId: employeeId });
